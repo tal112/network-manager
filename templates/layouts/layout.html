@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Chat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+
+
+</head>
+
+<body>
+
+
+        <aside class="sidebar pos-absolute z-2"
+       data-role="sidebar"
+       data-toggle="#sidebar-toggle-3"
+       id="sb3"
+       data-shift=".shifted-content">
+        <div class="sidebar-header" data-image="images/sb-bg-1.jpg">
+            <div class="avatar">
+                <img data-role="gravatar" data-email="talaksu@gmail.com">
+            </div>
+            <span class="title fg-black">Network Manager</span>
+            <span class="subtitle fg-black"> 2021 © Tal Sperling</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="/"><span class="mif-home icon" ></span>Connected Clients</a></li>
+            <li><a href="/scan_network"><span class="mif-eye icon"></span>Scan I.P. Addresses</a></li>
+            <li><a href="/check_sites"><span class="mif-help icon"></span>Help</a></li>
+
+        </ul>
+    </aside>
+        <div class="shifted-content h-100 p-ab">
+        <div class="app-bar pos-absolute bg-blue z-1" data-role="appbar">
+            <button class="app-bar-item c-pointer" id="sidebar-toggle-3">
+                <span class="mif-menu fg-white"></span>
+            </button>
+        </div>
+    {% block content %}{% endblock %}
+
+
+
+
+
+
+</body>
+</html>

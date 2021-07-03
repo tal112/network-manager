@@ -1,0 +1,63 @@
+{% extends "layouts/layout.html" %}
+{% block content %}
+
+
+
+        <div class="h-100 p-4">
+            <p class="h1">Scan Network</p>
+            <div data-role="panel" data-title-caption="What does this page do?" data-cls-title="bg-green fg-white" data-collapsed="true" data-collapsible="true">
+                    <p>This page scans the network by pinging the i.p. address range and shows a list of all machines connected to the network.</p>
+
+            </div>
+
+            <button class="button primary shadowed" onclick="startScan()">Start Scan</button>
+            <div id="client-list"></div>
+
+        </div>
+
+    <script>
+
+        function startScan(){
+                taskStart();
+
+                $.get("/api/scan_network_ip", function(connected_machines){
+
+                    taskEnd();
+
+                    html_content = ""
+                    html_content = html_content + '<table id="tbl"> <tr class="header"> <th style="width:60%;">I.P. Address</th></tr>';
+                    connected_machines.forEach(function(machine) {
+
+                            html_content = html_content + '<tr><td class="ip-address"><span class="mif-broadcast mif-2x fg-blue ani-hover-horizontal"></span> ' + machine["ip_address"] + '</td></tr>'
+
+                            html_content + html_content + 'html_content';
+
+
+                    });
+
+                    html_content = html_content + "</table>";
+                    $("#client-list").html(html_content);
+
+
+                });
+
+        };
+
+
+        function taskStart(){
+            progress = Metro.activity.open({
+                type: 'atom',
+                text: '<div class=\'mt-2 text-small\'>Scanning Network...</div>',
+                overlayClickClose: false
+            });
+        }
+
+
+        function taskEnd() {
+            Metro.activity.close(progress);
+        }
+
+
+    </script>
+
+{% endblock %}

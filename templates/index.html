@@ -1,0 +1,166 @@
+{% extends "layouts/layout.html" %}
+{% block content %}
+
+
+
+        <div class="h-100 p-4">
+            <p class="h1">Connected Clients</p>
+            <div data-role="panel" data-title-caption="What does this page do?" data-cls-title="bg-green fg-white" data-collapsed="true" data-collapsible="true">
+                    <p>The below list will automatically update every time a client connects and disconnects from the server.</p>
+                    <p>The system checks for connected clients every 5 seconds</p>
+            </div>
+
+
+            <input type="text" id="command-input" data-role="materialinput"
+               data-validate="required"
+               placeholder="Enter A System Command"
+               data-icon="<span class='mif-command'>"
+               data-label="system Command"
+               data-informer="Enter a valid system command to run on client"
+               data-cls-line="bg-cyan"
+               data-cls-label="fg-cyan"
+               data-cls-informer="fg-lightCyan"
+               data-cls-icon="fg-blue"
+            >
+
+            </br>
+            </br>
+
+
+
+            <button class="button primary shadowed" id="run-command">Run command on all clients</button>
+            <button class="button shadowed">Click on an I.P. address to run the command on a specific client</button>
+
+            <div class="grid">
+                    <div class="row">
+                        <div class="cell">
+                            <div id="client-list"></div>
+                        </div>
+                        <div class="cell">
+                            <div id="result-view"></div>
+                        </div>
+                    </div>
+
+            </div>
+
+
+
+
+        </div>
+
+        <script>
+
+
+        $('#run-command').click(function() {
+
+             command = $("#command-input").val();
+
+              if (command == ""){
+                    var options = {
+                        showTop: true
+                    }
+
+                   Metro.toast.create("Please enter a command", null, null, "alert", options);
+
+             }
+             else{
+                    taskStart();
+                     $.post("/api/run_command", {"target":"all", "command":command}, function(data){
+                            taskEnd();
+                            content = "";
+
+
+                            data.forEach(function(cmd_result) {
+                                    content = content + "<p>Client</p>" +  cmd_result['client'] + "<p>Result</p>" + cmd_result['result'] + "<p>_________</p></br>"
+                                });
+
+
+
+                            $("#result-view").html(content);
+
+                    });
+
+             }
+
+        });
+
+
+        function runOne(ipAddress){
+             command = $("#command-input").val();
+
+             if (command == ""){
+                    var options = {
+                        showTop: true
+                    }
+
+                   Metro.toast.create("Please enter a command", null, null, "alert", options);
+
+             }
+             else{
+                         taskStart();
+                         $.post("/api/run_command", {"target":"one", "command":command, "ip-address":ipAddress}, function(data){
+                            taskEnd();
+                            content = "";
+
+
+                                data.forEach(function(cmd_result) {
+                                        content = content + "<p>Client</p>" +  cmd_result['client'] + "<p>Result</p>" + cmd_result['result'] + "<p>_________</p></br>"
+                                    });
+
+
+
+                                $("#result-view").html(content);
+
+                        });
+             }
+
+        };
+
+         function taskStart(){
+            progress = Metro.activity.open({
+                type: 'atom',
+                text: '<div class=\'mt-2 text-small\'>Running Command...</div>',
+                overlayClickClose: false
+            });
+        }
+
+
+        function taskEnd() {
+            Metro.activity.close(progress);
+        }
+
+
+        var intervalId = window.setInterval(function(){
+            getClients();
+        }, 5000);
+
+        $( document ).ready(function() {
+            getClients();
+
+        });
+
+        function getClients(){
+                 $.get("/api/get_clients", function(clients){
+
+                        html_content = ""
+
+                        clients = JSON.parse(clients);
+
+                        html_content = html_content + '<table id="tbl"> <tr class="header"> <th style="width:60%;">I.P. Address</th> <th style="width:40%;">Connection Duration</th></tr>';
+                        clients.forEach(function(client) {
+                            html_content = html_content + '<tr><td class="ip-address" onclick="runOne(\'' + client["client"] + '\')"><span class="mif-broadcast mif-2x fg-blue ani-hover-horizontal"></span> ' + client["client"] + '</td><td><span class="mif-hour-glass mif-2x fg-blue ani-hover-horizontal"></span> ' + client["connected_duration"] + '</td></tr>'
+                        });
+
+                        html_content + html_content + 'html_content';
+
+                        $("#client-list").html(html_content);
+                });
+
+        };
+
+
+
+
+    </script>
+
+{% endblock %}
