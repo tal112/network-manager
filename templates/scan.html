@@ -25,10 +25,11 @@
                     taskEnd();
 
                     html_content = ""
-                    html_content = html_content + '<table id="tbl"> <tr class="header"> <th style="width:60%;">I.P. Address</th></tr>';
+                    html_content = html_content + '<table id="tbl"> <tr class="header"> <th style="width:60%;">I.P. Address</th><th style="width:60%;">Host Name</th></tr>';
+
                     connected_machines.forEach(function(machine) {
 
-                            html_content = html_content + '<tr><td class="ip-address"><span class="mif-broadcast mif-2x fg-blue ani-hover-horizontal"></span> ' + machine["ip_address"] + '</td></tr>'
+                            html_content = html_content + '<tr><td class="ip-address"><span class="mif-broadcast mif-2x fg-blue ani-hover-horizontal"></span> ' + machine["ip_address"] + '</td><td class="ip-address"><span class="mif-broadcast mif-2x fg-blue ani-hover-horizontal"></span> ' + machine["host_name"] + '</td></tr>'
 
                             html_content + html_content + 'html_content';
 

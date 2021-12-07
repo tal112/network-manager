@@ -1,5 +1,6 @@
 import os
 import threading
+import socket
 
 #Class that scans the network for all connected machines
 class Scanner:
@@ -32,7 +33,12 @@ class Scanner:
             with lock:
                 print(ip_address)
                 if ip_address != self.ip_address:
-                    machines_dict = {"ip_address": ip_address}
+                    try:
+                        host_name = socket.gethostbyaddr(ip_address)
+                    except:
+                        host_name = "?"
+                    machines_dict = {"ip_address": ip_address, "host_name": host_name[0]}
+                    print(machines_dict)
                     self.connected_machines.append(machines_dict)
 
 
