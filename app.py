@@ -34,7 +34,7 @@ srv = SocketConnection("", 0, 0)
 @app.before_first_request
 def before_first_request():
     global srv
-    srv = SocketConnection("192.168.1.14", 3333, 10)
+    srv = SocketConnection({Server I.P. Address}, 3333, 10)
 
 @app.route('/scan_network')
 def scan_network():

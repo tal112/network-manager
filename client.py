@@ -6,7 +6,7 @@ while True:
     try:
 
         client = socket(AF_INET, SOCK_STREAM)
-        client.connect(("192.168.1.14", 3333))
+        client.connect(({Server I.P. Address}, 3333))
 
         print("Client Connected")
 
